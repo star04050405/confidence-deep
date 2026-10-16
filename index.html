@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>confidence. 精读版 · Eight Steps Deep Read</title>
+<meta name="theme-color" content="#131210">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="confidence.精读">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.json">
+<style>
+:root{--bg:#131210;--ink:#EDE8DD;--soft:#8F887A;--gold:#C9A96A;--gold-dim:#8A7448;--line:#2C2924;--card:#1B1915}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--ink);font-family:"PingFang SC","Songti SC","SimSun",-apple-system,serif;line-height:1.9;display:flex;justify-content:center;padding:16px 13px calc(36px + env(safe-area-inset-bottom));min-height:100vh}
+.serif{font-family:Georgia,"Playfair Display","Songti SC","SimSun",serif}
+.book{width:100%;max-width:440px;display:flex;flex-direction:column}
+.pager{display:flex;justify-content:space-between;align-items:center;font-size:9.5px;color:var(--soft);letter-spacing:.3em;margin-bottom:9px;font-family:"SF Mono",Menlo,Consolas,monospace}
+.page{background:linear-gradient(165deg,#181613,#121110 55%);border:1px solid #2A2620;border-radius:6px;box-shadow:0 3px 8px rgba(0,0,0,.5),0 18px 44px rgba(0,0,0,.55);overflow:hidden;flex:1;position:relative}
+.page::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 20% 0%,rgba(201,169,106,.07),transparent 55%)}
+/* 封面 */
+.cover{padding:13% 10%;display:flex;flex-direction:column;align-items:center;text-align:center;min-height:500px;justify-content:center;cursor:pointer;position:relative}
+.cover .kick{font-size:9px;letter-spacing:.42em;color:var(--gold);margin-bottom:22px}
+.cover .t{font-family:Georgia,serif;font-size:44px;font-style:italic;color:var(--ink);letter-spacing:.02em}
+.cover .t b{color:var(--gold);font-weight:400}
+.cover .st{margin-top:14px;font-family:Georgia,serif;font-style:italic;font-size:15px;color:var(--soft);line-height:1.7}
+.cover .au{margin-top:26px;font-size:11px;letter-spacing:.3em;color:var(--gold)}
+.cover .rule{width:44px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:26px 0}
+.cover .deep{font-size:11px;letter-spacing:.34em;color:var(--soft)}
+.cover .deep b{color:var(--gold);font-weight:600}
+.cover .hint{position:absolute;bottom:5%;font-size:9.5px;letter-spacing:.26em;color:var(--soft)}
+/* 内页 */
+.inner{padding:24px 21px 26px;display:flex;flex-direction:column;min-height:100%;position:relative}
+.ph{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--gold-dim);padding-bottom:9px;margin-bottom:14px}
+.ph h2{font-size:15.5px;font-weight:700;letter-spacing:.1em}
+.ph .pg2{font-size:10px;color:var(--soft);letter-spacing:.2em;font-family:"SF Mono",Menlo,monospace}
+.ch-no{font-family:Georgia,serif;font-size:52px;font-style:italic;color:var(--gold);line-height:1}
+.ch-en{font-family:Georgia,serif;font-style:italic;font-size:16.5px;color:var(--ink);margin-top:6px}
+.ch-zh{font-size:19px;font-weight:700;letter-spacing:.14em;margin-top:3px}
+.ch-pg{font-size:10px;color:var(--gold-dim);letter-spacing:.2em;margin-top:6px;font-family:"SF Mono",Menlo,monospace}
+.qcard{margin:14px 0;padding:13px 15px;background:var(--card);border-left:2px solid var(--gold);border-radius:0 6px 6px 0}
+.qcard .en{font-family:Georgia,serif;font-style:italic;font-size:13px;color:var(--gold);line-height:1.7}
+.qcard .zh{font-size:11.5px;color:var(--soft);margin-top:6px;letter-spacing:.06em}
+.rt{font-size:9.5px;letter-spacing:.34em;color:var(--gold);margin:13px 0 8px;font-weight:700}
+.para{margin-bottom:11px}
+.para .pt{font-size:12.5px;font-weight:700;color:var(--ink);letter-spacing:.06em;margin-bottom:2px}
+.para .pt .num{font-family:Georgia,serif;font-style:italic;color:var(--gold);margin-right:7px;font-size:13px}
+.para p{font-size:12.5px;color:#C9C2B2;text-align:justify}
+/* prompts & practice */
+.prompt{background:var(--card);border:1px solid var(--line);border-radius:7px;padding:10px 12px;margin-bottom:7px;font-size:12px;color:#CFC8B8;display:flex;gap:10px}
+.prompt .q{color:var(--gold);font-family:Georgia,serif;font-style:italic;font-size:15px;line-height:1.5;flex-shrink:0}
+.pr-item{display:flex;gap:9px;align-items:flex-start;padding:9px 11px;border:1px solid var(--line);border-radius:7px;margin-bottom:7px;font-size:12px;color:#CFC8B8;cursor:pointer;transition:all .2s;background:var(--card)}
+.pr-item .cb{width:14px;height:14px;border-radius:4px;border:1.5px solid var(--gold);flex-shrink:0;margin-top:4px;position:relative}
+.pr-item.on{opacity:.55;border-color:var(--gold-dim)}
+.pr-item.on .cb{background:var(--gold)}
+.pr-item.on .cb::after{content:"✓";position:absolute;left:1.5px;top:-3.5px;font-size:11px;color:#131210;font-weight:800}
+.actcard{margin-top:12px;padding:13px 15px;background:linear-gradient(135deg,rgba(201,169,106,.13),rgba(201,169,106,.05));border:1px solid var(--gold-dim);border-radius:8px}
+.actcard .k{font-size:9px;letter-spacing:.32em;color:var(--gold);font-weight:700;margin-bottom:6px}
+.actcard p{font-size:12.5px;color:var(--ink)}
+.foot{display:flex;justify-content:space-between;align-items:center;margin-top:auto;padding-top:13px;border-top:1px solid var(--line)}
+.readmark{font-size:9.5px;letter-spacing:.24em;color:var(--soft)}
+.readmark.on{color:var(--gold);font-weight:700}
+/* 目录 */
+.toc{list-style:none}
+.toc li{display:flex;align-items:center;gap:10px;padding:11px 3px;border-bottom:1px solid var(--line);cursor:pointer}
+.toc .no{font-family:Georgia,serif;font-style:italic;color:var(--gold);font-size:13px;width:26px;flex-shrink:0}
+.toc .nm{flex:1}
+.toc .nm b{display:block;font-size:13.5px;letter-spacing:.08em}
+.toc .nm span{display:block;font-family:Georgia,serif;font-style:italic;font-size:10.5px;color:var(--soft)}
+.toc .st2{font-size:9px;letter-spacing:.2em;color:var(--gold-dim);flex-shrink:0}
+.toc li.read .st2{color:var(--gold)}
+.toc .done{font-size:10px;color:var(--gold);flex-shrink:0}
+.progress{display:flex;align-items:center;gap:9px;margin:12px 0 6px}
+.progress .tr{flex:1;height:6px;background:var(--line);border-radius:99px;overflow:hidden}
+.progress .fl{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));border-radius:99px;transition:width .4s}
+.progress .ct{font-size:10px;color:var(--gold);font-family:"SF Mono",Menlo,monospace}
+.tailnote{font-size:10px;color:var(--soft);border-top:1px solid var(--line);padding-top:11px;margin-top:auto;letter-spacing:.05em}
+.nav{display:flex;gap:10px;margin-top:14px}
+.nav button{flex:1;border:1px solid var(--gold-dim);background:transparent;color:var(--gold);font-size:12px;font-weight:600;padding:11px 0;border-radius:99px;letter-spacing:.18em;cursor:pointer;font-family:inherit}
+.nav button.solid{background:var(--gold);color:#131210;border-color:var(--gold)}
+.nav button:disabled{opacity:.25;cursor:default}
+.pageno{text-align:center;font-size:10px;color:var(--soft);margin-top:9px;letter-spacing:.3em;font-family:"SF Mono",Menlo,monospace;font-variant-numeric:tabular-nums}
+</style>
+</head>
+<body>
+<div class="book">
+  <div class="pager"><span>ROXIE NAFOUSI · DEEP READ</span><span id="dateStr"></span></div>
+  <div class="page" id="page"></div>
+  <div class="nav">
+    <button id="prevBtn">‹ PREV</button>
+    <button class="solid" id="nextBtn">NEXT ›</button>
+  </div>
+  <div class="pageno" id="pageno"></div>
+</div>
+<script>
+(function(){
+"use strict";
+/* Roxie Nafousi · 《Manifest: 8 Steps to Knowing Your Worth》精读版
+   骨架（章名/页码/金句）沿用 confidence V1 考古结果；精读段落与练习按原书体系扩写 */
+var BOOK={title:"Manifest",sub:"8 Steps to Knowing Your Worth",author:"Roxie Nafousi",zh:"八步，认识你自己的价值"};
+var CH=[
+{no:"01",en:"Master Your Thoughts",zh:"掌控你的念头",pg:"p.09",
+ quote:"Our thoughts shape our beliefs, and our beliefs shape our reality.",
+ zh_quote:"念头塑造信念，信念塑造现实。",
+ read:[
+ ["一切从一个念头开始","念头影响感受、驱动行为、最终构成自我价值的底座。如果一个念头被重复得足够多，它就会固化成信念，成为你解读世界的滤镜。 Roxie 说，我们对自己说的每一句话都在投票——投给「我不够好」，还是投给「我值得」。"],
+ ["念头不等于事实","「我是不是想多了」——不，你想的每一遍都算数。大脑分不清「真实发生」和「反复想象」，它只负责把高频的东西当成真的。所以自我贬低不是谦虚，是在给大脑喂错的数据。"],
+ ["捕捉 → 检查 → 改写","掌控念头的第一步是「看见」：把那句自动冒出来的负面自语抓出来写下来；第二步是检查：它有证据吗？我会这样对朋友说话吗？第三步是改写：换成一句你愿意相信的版本。"],
+ ["这就是自我价值的入口","Roxie 把这一步放在八步之首，因为后面的一切——行动、边界、庆祝——都建立在「你怎么跟自己说话」之上。念头是地基，地基换了，整栋楼都会跟着换。"]],
+ prompts:[
+ "写下最近一周里出现过三次以上的那句自我批评——它的原话是什么？",
+ "如果它是别人说的话，你会怎么回应它？把回应写下来。",
+ "把这句话改写成你「愿意相信」的版本，贴在你每天都会看到的地方。"],
+ practice:["每天记下一条「冒出来的负面念头」","睡前用改写后的句子替换它一遍"],
+ act:"今天每当你想说「我不行」，在心里把主语换成你最好的朋友的名字——你舍得对她这么说吗？"},
+{no:"02",en:"Act with Intention",zh:"有意识地行动",pg:"p.33",
+ quote:"Our actions, big and small, either build us up or break us down.",
+ zh_quote:"我们的行动，无论大小，要么建立我们，要么拆掉我们。",
+ read:[
+ ["行动比语言更响","每天的选择、习惯和行为，都在向自己传递关于「我值得怎样被对待」的讯息——为爱的人做一杯咖啡是表达爱，那么为自己早睡一次，也是。 Roxie 说，自尊是被自己的行动一天天「证明」出来的。"],
+ ["把「为自己做事」当成正经事","我们习惯把别人的事排在前面，把自己的休息、锻炼、爱好当作可以随时牺牲的余项。有意识地行动，就是把这些事重新写进日程，并且像对待工作会议一样对待它们。"],
+ ["小行动的信噪比","不是只有大决定才算数。整理床头、删掉让你不舒服的聊天置顶、把水杯放在看得见的地方——这些微小的一致性，是大脑收集「我说到做到」证据的过程。"],
+ ["从无意识滑过，到有意识选择","旧版的一天是被惯性推着走的；这一步要做的，是在「拿手机」之前多问一句：我接下来要做的事，会建立我，还是拆掉我？"]],
+ prompts:[
+ "列出三件你一直在「为别人做」却从没为自己做过的事。",
+ "挑一件本周就能做的，给它一个具体的日期和时间。",
+ "写下上一次你「说了要做却没做」的事——是什么拆掉了它？"],
+ practice:["每天做一件「只为自己」的小事并记录","晚间检查：今天的行动大多建立了我，还是拆掉了我"],
+ act:"今天把「为自己做的那件小事」安排进日程表，像对待别人的约一样准时赴约。"},
+{no:"03",en:"Stop Trying to Be Liked by Everybody",zh:"别追求被所有人喜欢",pg:"p.51",
+ quote:"Stop trying to be liked by everyone; you don't even like everyone.",
+ zh_quote:"别追求被所有人喜欢——你也不是喜欢每一个人。",
+ read:[
+ ["讨好的来路","从小学起，Roxie 就用妈妈便当里的糖果去「换」友谊，十二岁起花零花钱请同学吃饭——因为她不相信「原本的自己」就足够被喜欢。讨好的尽头是自我消失：你越努力扮演，越不确定真正的自己值不值得被爱。"],
+ ["讨好是一种悄悄的自我贬低","每一次违背自己的心意去附和，都在告诉潜意识：我的真实感受不重要。被所有人喜欢是不可能的任务，而追求它的代价是——连你自己都不再喜欢自己。"],
+ ["被讨厌的额度","Roxie 的解法是给自己配一份「被讨厌的预算」：说「不」、提不同意见、拒绝一场不想去的局。关系会重新洗牌，但留下的，是喜欢「原本的你」的人。"],
+ ["边界不是墙","不讨好不等于冷硬。边界是把「别人的课题」还给别人：他的失望、她的评价，都由他自己消化。你只负责诚实地站在这里。"]],
+ prompts:[
+ "最近一次「明知不想还是答应了」是什么？答应的瞬间你在怕什么？",
+ "写下三句你很难说出口的「不」，并把它们改成可以直接发送的版本。",
+ "谁喜欢你是因为「原本的你」？把这段关系写下来，那是你的参照系。"],
+ practice:["每天至少一次说出真实的想法（哪怕很小）","记录一次「说了不，天没有塌」的体验"],
+ act:"今天找一件本来不想做的小事（一个局、一次代劳），礼貌地拒绝它。"},
+{no:"04",en:"Break Free from Comparison",zh:"挣脱比较",pg:"p.75",
+ quote:"Comparison is the thief of confidence.",
+ zh_quote:"比较是自信的小偷。",
+ read:[
+ ["比较偷走的不止快乐","人们常说比较偷走快乐，Roxie 说它同样偷走自信。当我们把自己和「看起来更成功、更好看、更受欢迎」的人对照，就会一步步相信：我不够好、不够行、不够足够。"],
+ ["你比较的是切片，不是人生","刷到的是别人三分钟的精华剪辑，拿来和自己一整天无剪辑的日常对照——这场比赛从一开始就不公平。你看见的是别人的高光，看不见的是他们的账单、失眠和自我怀疑。"],
+ ["比较的注意力经济学","比较把注意力从「我拥有什么、我本来是谁」挪到「我缺什么、我差多远」。注意力在哪，情绪就在哪——这也是为什么越刷越空，越刷越丧。"],
+ ["把镜头转回自己","挣脱比较不是假装别人不存在，而是把镜头转回来：和昨天的自己比，和上个月的自己比。你的人生是一条线，不是一张成绩排名表。"]],
+ prompts:[
+ "写下你最常拿来比较的那个人，以及比较背后你真正想要的东西。",
+ "那条东西，有没有一条「不需要经过比较」就能靠近的路径？",
+ "过去一年里，你在哪些方面比去年的自己更好？至少写三条。"],
+ practice:["给刷社交媒体设定时段，刷后记录情绪","每天写一条「比昨天的自己好一点点」的事"],
+ act:"今天取关（或静音）那个每次刷到都让你心里发紧的账号——试验一周。"},
+{no:"05",en:"Celebrate Yourself",zh:"庆祝自己",pg:"p.99",
+ quote:"Honour who you were, appreciate who you are and be proud of who you're becoming.",
+ zh_quote:"尊重过去的你，欣赏现在的你，为正在成为的你骄傲。",
+ read:[
+ ["庆祝不是自恋","低自尊者最擅长的是「 achievements 打折」：升职是运气，被夸是客气，做成是应该。庆祝自己，是把成就按原价收下——这是诚实，不是膨胀。"],
+ ["三个时态的和解","Roxie 这句话是一套时间线：尊重过去的你（她撑过来了），欣赏现在的你（她在这里），为正在成为的你骄傲（她还在长）。缺了任何一个时态，自我价值都会漏气。"],
+ ["小胜利需要仪式感","大脑对「做到」的记忆是短暂的，对「没做到」的记忆是漫长的。所以庆祝必须刻意：记下来、说出口、给自己一点真实的奖励。"],
+ ["庆祝会传染","当你习惯庆祝自己，你也会更慷慨地庆祝别人——反之亦然。一个能为朋友的成功鼓掌的人，才真正相信自己值得被鼓掌。"]],
+ prompts:[
+ "写下今年你做成过的五件事——无论多小，按原价写，不打折。",
+ "过去那个最难的你，会对现在的你说什么？替她写下来。",
+ "给自己设计一个「小庆祝仪式」，下次完成目标时执行。"],
+ practice:["每天睡前记一件「今天做得好的事」","每周给自己一个小奖励并认真享受它"],
+ act:"今天把别人夸过你的一句话原样收下——只说「谢谢」，不加「没有啦」。"},
+{no:"06",en:"Do Hard Things",zh:"做难的事",pg:"p.121",
+ quote:"Courage is not the absence of fear, but the willingness to act despite it.",
+ zh_quote:"勇气不是没有恐惧，而是带着恐惧仍然行动。",
+ read:[
+ ["自信不在舒适区里长出来","Roxie 从儿子第一次上台的紧张讲起——真正的建立发生在「做了那件有点难的事」之后。自信常常不是大跨步，而是日常里每一次选择「再试一下」的复利。"],
+ ["恐惧是被误解的信使","紧张、心跳加速、想逃——身体在说「这件事重要」，而不是「你不行」。把恐惧重新翻译成「在意」，是很多自信者共用的内部协议。"],
+ ["难的事要切碎","「上台演讲」很大，「今天对着镜子讲一分钟」很小。把难的事切成今天就能咽下的尺寸，恐惧就没有那么大的体积可以吓唬你。"],
+ ["收集「我做到了」的证据","每次做完难的事，把它记下来。这份证据清单会在你下次发怵的时候提醒你：你已经做到过，你可以再来一次。"]],
+ prompts:[
+ "写下那件你「一直想做但一直在拖」的事——拖住你的具体是什么？",
+ "把它切成三步，写出第一步（必须小到今天能完成）。",
+ "回忆上一次「怕但做了」的经历——它给你留下了什么？"],
+ practice:["每天做一件让你有点紧张的小事","做完难的事后记录「证据清单」"],
+ act:"今天做那件在待办里躺了最久的「难事」——只做第一步就算赢。"},
+{no:"07",en:"Be of Service to Others",zh:"为他人付出",pg:"p.147",
+ quote:"When you pour into others, you fill your soul with purpose.",
+ zh_quote:"当你为他人倾注，你的灵魂就装满了意义。",
+ read:[
+ ["自我审查的内循环","低自尊最消耗人的方式，是把我们锁进自我审查的内循环：反复想自己哪里不好、刚才那句话是不是说错了。Roxie 说自己在最低谷时，整个生活都围着「我的问题」打转。"],
+ ["付出是最快的出口","把注意力转向他人——帮一个忙、认真听一个人说话、做一件对别人有用的事——内循环就被打断了。意义感不是想出来的，是做出来、给出来的。"],
+ ["尺度很重要","付出不是讨好（那是第三步的老毛病）：讨好是为了被喜欢而给，服务是「我有余力，所以给」。前者消耗自己，后者滋养自己。"],
+ ["微小的给予","不必是大事。给同事带一杯咖啡、给朋友的动态认真留一句评论、给家人做一顿饭——微小的给予会累积成「我对这个世界有用」的身体记忆。"]],
+ prompts:[
+ "写下三件「你做得顺手、别人正好需要」的事。",
+ "本周可以为谁做其中一件？定下时间。",
+ "回想最近一次帮助别人后的感受——那种感觉叫什么名字？"],
+ practice:["每天一次微小的给予","每周做一次「不署名」的好事"],
+ act:"今天认真赞美两个人——具体到细节，而不是「你真棒」。"},
+{no:"08",en:"Show Up as Your Best Self",zh:"以最好的自己出场",pg:"p.169",
+ quote:"You owe it to yourself to become everything you've ever dreamed of being.",
+ zh_quote:"成为你梦想中的一切，是你欠自己的。",
+ read:[
+ ["走进那个角色","最后一步，是走进「你最自信的那个自己」的角色里。Roxie 在《Manifest》里说过：fake it till you become——不是假装，是排练。身体先站进那个姿势，灵魂跟上来。"],
+ ["最好的自己是行为集","「最自信的自己」不是一个远方的终点，而是一组具体行为：她会怎么说「不」、怎么开场、怎么犯错、怎么收场。把这些行为列出来，就是你的出场清单。"],
+ ["环境会替你出场","衣服、姿势、桌面、日程——环境每天都在替你说话。像最自信的自己那样布置它们，出场费就省了一半。"],
+ ["循环完成","八步走完是一个环：念头→行动→边界→比较→庆祝→难事→付出→出场。而出场的那个你，会用新的念头重新开始这个环——每一圈，都更像是真的。"]],
+ prompts:[
+ "描述「最自信的你」的一天：她几点起床、怎么开会、怎么拒绝、怎么休息？",
+ "从这段描述里挑三条「今天就能模仿的行为」。",
+ "一年后你希望别人怎么形容你？写下来，倒推第一步。"],
+ practice:["每天按「出场清单」演练一条行为","每周复盘：哪条行为已经变成真的了"],
+ act:"今天有一个场合，请「最自信的你」先到场——挺直背，先开口说第一句话。"}
+];
+
+var S=null;try{S=window.localStorage}catch(e){}
+function load(k){if(!S)return{};try{return JSON.parse(S.getItem(k)||"{}")}catch(e){return{}}}
+function save(k,r){if(S)try{S.setItem(k,JSON.stringify(r))}catch(e){}}
+var PR=load("cd.pr"),CHM=load("cd.ch");
+var $=function(id){return document.getElementById(id)};
+function esc(s){return s.replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]})}
+var N=CH.length*2+3; /* 0封面 1地图 2..17章A/B 18尾页 */
+var cur=0;
+function chRead(i){return !!CHM["c"+i]}
+function chDoneCount(){var n=0;for(var k in CHM){if(CHM[k])n++}return n}
+function prDoneIn(ci){var n=0;CH[ci].practice.forEach(function(_,gi){if(PR["p"+ci+"_"+gi])n++});CH[ci].prompts.forEach(function(_,gi){if(PR["q"+ci+"_"+gi])n++});return n}
+function render(){
+  var pg=$("page"),h="";
+  if(cur===0){
+    h='<div class="cover" id="coverGo"><div class="kick">'+esc(BOOK.author).toUpperCase()+' · EIGHT STEPS</div>'+
+      '<div class="t serif">confidence<b>.</b></div>'+
+      '<div class="st">'+esc(BOOK.sub)+'</div>'+
+      '<div class="au">'+esc(BOOK.zh)+'</div>'+
+      '<div class="rule"></div>'+
+      '<div class="deep">精读版 · <b>每章 精读 + 实践 两页</b></div>'+
+      '<div class="hint">点封面 · 开始精读</div></div>';
+  }else if(cur===1){
+    var dc=chDoneCount();
+    h='<div class="inner"><div class="ph"><h2>阅读地图</h2><span class="pg2">MAP</span></div>'+
+      '<div class="progress"><div class="tr"><div class="fl" style="width:'+(dc*100/CH.length)+'%"></div></div><span class="ct">'+dc+' / '+CH.length+' 章完成</span></div>'+
+      '<ul class="toc">';
+    CH.forEach(function(c,i){
+      h+='<li data-p="'+(i*2+2)+'" class="'+(chRead(i)?"read":"")+'"><span class="no">'+c.no+'</span><span class="nm"><b>'+esc(c.zh)+'</b><span>'+esc(c.en)+' · '+c.pg+'</span></span><span class="st2">'+(chRead(i)?"READ":prDoneIn(i)>0?"·":"")+'</span><span class="done">'+(chRead(i)?"✓":"")+'</span></li>';
+    });
+    h+='</ul><div class="tailnote">每章两页：精读（概念细讲）+ 实践（写作引导 · 每日练习 · 今日微行动）。边读边看，读完一章，点亮一章。</div></div>';
+  }else if(cur<=CH.length*2+1){
+    var ci=Math.floor((cur-2)/2), half=(cur-2)%2, c=CH[ci];
+    if(half===0){
+      h='<div class="inner"><div class="ph"><h2>'+c.no+' · 精读</h2><span class="pg2">'+String(cur-1).padStart(2,"0")+'</span></div>'+
+        '<div class="ch-no">'+c.no+'</div>'+
+        '<div class="ch-en serif">'+esc(c.en)+'</div>'+
+        '<div class="ch-zh">'+esc(c.zh)+'</div>'+
+        '<div class="ch-pg">'+c.pg+' · DEEP READ</div>'+
+        '<div class="qcard"><div class="en">"'+esc(c.quote)+'"</div><div class="zh">'+esc(c.zh_quote)+'</div></div>'+
+        '<div class="rt">精 读</div>'+
+        c.read.map(function(r,i){return '<div class="para"><div class="pt"><span class="num">'+["I","II","III","IV"][i]+'</span>'+esc(r[0])+'</div><p>'+esc(r[1])+'</p></div>'}).join("")+
+        '<div class="foot"><span class="readmark '+(chRead(ci)?"on":"")+'">'+(chRead(ci)?"● 本章读完":"○ 精读中")+'</span><span class="pg2">'+c.no+' A / B</span></div></div>';
+    }else{
+      var pd=prDoneIn(ci);
+      h='<div class="inner"><div class="ph"><h2>'+c.no+' · 实践</h2><span class="pg2">'+String(cur-1).padStart(2,"0")+'</span></div>'+
+        '<div class="rt" style="margin-top:2px">写 一 写 · Journal Prompts</div>'+
+        c.prompts.map(function(q,gi){return '<div class="prompt" data-k="q'+ci+'_'+gi+'" class=""><span class="q">?</span><span>'+esc(q)+'</span></div>'}).join("")+
+        '<div class="rt">每 日 练 习 · 点亮打卡</div>'+
+        c.practice.map(function(p,gi){return '<div class="pr-item'+(PR["p"+ci+"_"+gi]?" on":"")+'" data-k="p'+ci+'_'+gi+'"><span class="cb"></span><span>'+esc(p)+'</span></div>'}).join("")+
+        '<div class="actcard"><div class="k">TODAY · 今天做这个</div><p>'+esc(c.act)+'</p></div>'+
+        '<div class="foot"><span class="pg2">练习 '+pd+' / '+(c.practice.length+c.prompts.length)+'</span><span class="pg2">'+c.no+' B / B</span></div></div>';
+    }
+  }else{
+    var dc=chDoneCount();
+    h='<div class="inner"><div class="ph"><h2>八步走完</h2><span class="pg2">END</span></div>'+
+      '<div class="qcard" style="margin-top:8px"><div class="en">"You owe it to yourself to become everything you\'ve ever dreamed of being."</div><div class="zh">成为你梦想中的一切，是你欠自己的。</div></div>'+
+      '<p style="font-size:12.5px;color:#C9C2B2;margin:10px 0">八步是一个环：念头 → 行动 → 边界 → 比较 → 庆祝 → 难事 → 付出 → 出场。出场的那个你，会用新的念头重新开始这个环——每一圈，都更像是真的。</p>'+
+      '<div class="progress"><div class="tr"><div class="fl" style="width:'+(dc*100/CH.length)+'%"></div></div><span class="ct">'+dc+' / '+CH.length+' 章完成</span></div>'+
+      '<div class="tailnote">《'+esc(BOOK.title)+'》 '+esc(BOOK.sub)+' · '+esc(BOOK.author)+'<br>精读版骨架据 V1 考古（章名/页码/金句）· 段落与练习按原书体系扩写<br>本站为个人阅读伴侣 · 不构成心理治疗建议</div></div>';
+  }
+  pg.innerHTML=h;
+  $("prevBtn").disabled=cur===0;
+  $("nextBtn").textContent=cur===N-1?"COVER ↻":"NEXT ›";
+  $("pageno").textContent=cur===0?"— COVER —":(cur+1)+" / "+N;
+  var go=$("coverGo");
+  if(go)go.addEventListener("click",function(){cur=1;render()});
+  pg.querySelectorAll(".toc li").forEach(function(li){
+    li.addEventListener("click",function(){cur=parseInt(li.getAttribute("data-p"),10);render();window.scrollTo(0,0)});
+  });
+  pg.querySelectorAll(".pr-item").forEach(function(it){
+    it.addEventListener("click",function(){
+      var k=it.getAttribute("data-k");
+      if(PR[k]){delete PR[k]}else{PR[k]=1}
+      save("cd.pr",PR);render();
+    });
+  });
+  pg.querySelectorAll(".prompt").forEach(function(it){
+    it.addEventListener("click",function(){
+      var k=it.getAttribute("data-k");
+      if(PR[k]){delete PR[k]}else{PR[k]=1}
+      save("cd.pr",PR);render();
+    });
+  });
+  /* 精读页看完+实践页访问过 → 章完成 */
+  if(cur>=2&&cur<=CH.length*2+1){
+    var ci2=Math.floor((cur-2)/2);
+    if(cur%2===1&&!chRead(ci2)){CHM["c"+ci2]=1;save("cd.ch",CHM)}
+  }
+}
+$("prevBtn").addEventListener("click",function(){if(cur>0){cur--;render();window.scrollTo(0,0)}});
+$("nextBtn").addEventListener("click",function(){cur=cur===N-1?0:cur+1;render();window.scrollTo(0,0)});
+var now=new Date();
+$("dateStr").textContent=(now.getMonth()+1)+"."+now.getDate();
+render();
+"use strict";
+
+})();
+</script>
+</body>
+</html>
